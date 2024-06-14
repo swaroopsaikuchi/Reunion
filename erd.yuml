@@ -1,0 +1,28 @@
+// Customers
+[Customer|+CustomerID: INT;+Name: VARCHAR;+Email: VARCHAR;+Phone: VARCHAR;+RegistrationDate: DATE|+Register();+Login()]
+[Customer]<>-has*>[Address]
+
+// Addresses
+[Address|+AddressID: INT;+CustomerID: INT;+AddressLine1: VARCHAR;+AddressLine2: VARCHAR;+City: VARCHAR;+State: VARCHAR;+ZipCode: VARCHAR;+Country: VARCHAR;+StartDate: DATE;+EndDate: DATE|+AddAddress();+UpdateAddress()]
+
+// Products
+[Product|+ProductID: INT;+Name: VARCHAR;+Category: VARCHAR;+Description: TEXT;+DateAdded: DATE|+AddProduct();+UpdateProduct()]
+[Product]<>-has*>[ProductVariant]
+
+// ProductVariants
+[ProductVariant|+VariantID: INT;+ProductID: INT;+VariantName: VARCHAR;+DateLaunched: DATE;+DateDiscontinued: DATE|+AddVariant();+UpdateVariant()]
+[ProductVariant]<>-has*>[Price]
+
+// Prices
+[Price|+PriceID: INT;+VariantID: INT;+Price: DECIMAL;+StartDate: DATE;+EndDate: DATE|+SetPrice();+UpdatePrice()]
+
+// Orders
+[Order|+OrderID: INT;+CustomerID: INT;+OrderDate: DATE;+TotalAmount: DECIMAL|+PlaceOrder();+CancelOrder()]
+[Order]<>-contains*>[OrderDetail]
+
+// OrderDetails
+[OrderDetail|+OrderDetailID: INT;+OrderID: INT;+VariantID: INT;+Quantity: INT;+UnitPrice: DECIMAL|+AddOrderDetail();+UpdateOrderDetail()]
+
+// Relationships
+[Customer]<>-orders*>[Order]
+[Order]-[note: Aggregate Root ala DDD]
